@@ -1,6 +1,7 @@
 import { ChangeEvent, FunctionComponent, useState } from "react";
 import axiosInstance from "../../Services/AxiosConfig";
 
+import { Toaster } from "../ui/toaster";
 import { Input } from "../ui/input";
 
 import { UserInterface } from "../../Interfaces/User/User";
@@ -10,6 +11,8 @@ interface FormProps {
 }
 
 const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
+  const [confpass, setConfpass] = useState<string>("");
+
   const [userCredentials, setUserCredentials] = useState<UserInterface>({
     name: "",
     email: "",
@@ -25,6 +28,34 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
     }));
   };
 
+  const handleRegister = () => {
+    if (
+      !userCredentials.name ||
+      !userCredentials.email ||
+      !userCredentials.password ||
+      !confpass
+    ) {
+      alert("Preencha todos os campos poha");
+    } else if (userCredentials.password !== confpass) {
+      alert("As senhas não condizem");
+    } else {
+      axiosInstance
+        .post("/user", {
+          name: userCredentials.name,
+          email: userCredentials.email,
+          password: userCredentials.password,
+        })
+        .then(() => {
+          alert("Registrado com sucesso!");
+          handleLogin();
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+          console.log(error);
+        });
+    }
+  };
+
   const handleLogin = () => {
     // console.log(userCredentials);
     axiosInstance
@@ -34,6 +65,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
       })
       .then((res) => {
         localStorage.setItem("userToken", res.data.token);
+        localStorage.setItem("userInfo", JSON.stringify(res.data.user));
         window.location.replace("/");
       })
       .catch((error) => {
@@ -64,6 +96,9 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
             </label>
             <Input
               type="text"
+              value={userCredentials.name || ""}
+              name="name"
+              onChange={(e) => handleChange(e)}
               id="nome"
               className="rounded-std border-2 border-secundary"
             />
@@ -88,6 +123,8 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
               Confirmar senha
             </label>
             <Input
+              value={confpass}
+              onChange={(e) => setConfpass(e.target.value)}
               id="confpassword"
               type="password"
               className="rounded-std border-2 border-secundary"
@@ -104,7 +141,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
         ) : (
           <input
             type="submit"
-            onClick={() => handleLogin()}
+            onClick={() => handleRegister()}
             value="Registrar"
             className="border h-10 rounded-std bg-primary-std text-white font-bold text-base hover:cursor-pointer hover:bg-roxoLogo-dark"
           />
@@ -118,6 +155,8 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
             <p className="font-bold text-primary-std">Já possui uma conta?</p>
           </a>
         )}
+
+        <Toaster />
       </div>
     </>
   );

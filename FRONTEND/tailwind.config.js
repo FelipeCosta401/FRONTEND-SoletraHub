@@ -17,8 +17,14 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        600: "600px",
+        650: "650px",
+      },
       width: {
+        "1/8": "128px",
         500: "500px",
+        1000: "1000px",
       },
       colors: {
         primary: {
