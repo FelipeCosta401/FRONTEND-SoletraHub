@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Keys from "../../Components/KeysArea/Keys";
 import Table from "../../Components/AllWordsTable/Table";
+import Navbar from "@/Components/Navbar/Navbar";
 
-const Home = () => {
-  const [hour, setHour] = useState<number>(new Date().getHours());
+interface HomeProps {
+  screenSize: number;
+}
+
+const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
   const [token, setToken] = useState<string | null>("");
   const [key, setKey] = useState<string>("");
   const [value, setValue] = useState<String>("");
@@ -15,10 +19,6 @@ const Home = () => {
     setToken(token);
   }, [localStorage.getItem("userToken")]);
 
-  useEffect(() => {
-    console.log(hour);
-  }, [hour]);
-
   const updateLocalStorage = (key: string, value: string) => {
     setKey(key);
     setValue(value);
@@ -27,24 +27,31 @@ const Home = () => {
   return (
     <>
       {token !== null ? (
-        <div className="w-screen flex">
-          <div className="h-screen w-32 shadow-md fixed left-0 ">
-            <Sidebar home />
-          </div>
-          <div className="w-full ml-32">
-            <main className="flex justify-between pt-12">
-              <div className="w-1/2">
+        <div className="max-w-screen flex max-[590px]:flex-col justify-between gap-4">
+          {screenSize <= 590 ? (
+            <nav>
+              <Navbar home/>
+            </nav>
+          ) : (
+            <aside className="h-screen w-32 shadow-md fixed left-0">
+              <Sidebar home />
+            </aside>
+          )}
+
+          <main className="w-full h-screen flex justify-center items-center max-[1200px]:h-full  min-[591px]:ml-36">
+            <div className="w-[95%] flex justify-center items-center gap-4 max-[1200px]:flex-col max-[1200px]:mt-28">
+              <div className="w-1/2 flex justify-center items-center">
                 <Keys
                   onUpdate={(key: any, value: any) =>
                     updateLocalStorage(key, value)
                   }
                 />
               </div>
-              <div className="w-1/2">
+              <div className="w-500 max-[650px]:w-full flex justify-center items-center">
                 <Table tableUpdate={{ [key]: value }} />
               </div>
-            </main>
-          </div>
+            </div>
+          </main>
         </div>
       ) : (
         window.location.replace("/login")

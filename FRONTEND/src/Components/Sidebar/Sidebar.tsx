@@ -3,7 +3,6 @@ import UserContext from "@/Context/UserContext";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,8 +14,9 @@ import {
 
 import { Gamepad2, HomeIcon, Star, LogOut } from "lucide-react";
 
-import Logo from "../../assets/Logosimples.png";
+import Logo from "../../assets/Logo.png";
 import Avatar from "../UserDefaultAvatar/Avatar";
+import { Button } from "../ui/button";
 
 interface SideBarprops {
   home?: boolean;
@@ -24,9 +24,7 @@ interface SideBarprops {
   profile?: boolean;
 }
 
-const Sidebar: FunctionComponent<SideBarprops> = ({
-  home
-}) => {
+const Sidebar: FunctionComponent<SideBarprops> = ({ home, ranking }) => {
   const { info } = useContext(UserContext);
   const handleLogout = () => {
     localStorage.clear();
@@ -35,27 +33,41 @@ const Sidebar: FunctionComponent<SideBarprops> = ({
 
   return (
     <>
-      <div className="h-full w-32 flex flex-col items-center justify-between fixed left-0">
-        <div className="flex flex-col items-center w-1/2 hover:cursor-pointer">
+      <div className="h-full w-32 flex flex-col items-center justify-between">
+        <div className="flex flex-col items-center w-full hover:cursor-pointer">
           <img src={Logo} />
-          <h1 className="font-bold text-2xl text-center text-tDark">
-            Soletra Hub
-          </h1>
         </div>
         <div className=" w-16 h-80 mx-auto flex flex-col gap-10">
           <div
+            onClick={() => window.location.replace("/")}
             className={`w-full h-16 ${
               home
-                ? "bg-primary-std text-white hover:bg-primary-dark"
-                : "bg-secundary text-tDark hover:bg-zinc-400"
+                ? "bg-roxoLogo-std text-white hover:bg-roxoLogo-dark"
+                : "bg-grayDefault text-tDark hover:bg-zinc-400"
             } rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer `}
           >
-            <Gamepad2 size={45} onClick={() => window.location.replace("/")} />
+            <Gamepad2 size={45} />
           </div>
-          <div className="w-full h-16 bg-secundary rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer">
-            <Star size={45} className="text-tDark" />
-          </div>
-          <div className="w-full h-16 bg-secundary rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer">
+          {ranking ? (
+            <div
+              onClick={() => {
+                window.location.replace("/ranking");
+              }}
+              className="w-full h-16 bg-roxoLogo-std rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer"
+            >
+              <Star size={45} className="text-white" />
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                window.location.replace("/ranking");
+              }}
+              className="w-full h-16 bg-grayDefault rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer hover:bg-zinc-400"
+            >
+              <Star size={45} className="text-tDark" />
+            </div>
+          )}
+          <div className="w-full h-16 bg-grayDefault rounded-sm flex items-center justify-center shadow-2xl hover:cursor-pointer">
             <HomeIcon size={45} className="text-tDark" />
           </div>
         </div>
@@ -68,7 +80,7 @@ const Sidebar: FunctionComponent<SideBarprops> = ({
           >
             <Avatar name={info.name} />
           </div>
-          <div className="w-full h-1/3 bg-primary-std rounded-std flex items-center justify-center gap-1 hover:cursor-pointer hover:shadow-xl hover:bg-primary-dark">
+          <div className="w-full h-1/3 bg-roxoLogo-std rounded-std flex items-center justify-center gap-1 hover:cursor-pointer hover:shadow-xl hover:bg-roxoLogo-dark">
             <AlertDialog>
               <AlertDialogTrigger className="flex items-center justify-center gap-1">
                 <LogOut color="#fff" size={20} />
@@ -85,9 +97,12 @@ const Sidebar: FunctionComponent<SideBarprops> = ({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleLogout()}>
+                  <Button
+                    variant={"destructive"}
+                    onClick={() => handleLogout()}
+                  >
                     Continue
-                  </AlertDialogAction>
+                  </Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

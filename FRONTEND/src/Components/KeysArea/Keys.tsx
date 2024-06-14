@@ -91,7 +91,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
 
   return (
     <>
-      <div className="w-full flex flex-col gap-4 border">
+      <div className="w-[440px] flex flex-col gap-4">
         <div className="w-full h-11 flex justify-center ">
           <input
             type="text"
@@ -109,7 +109,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/2 flex justify-end pr-2">
               <div
                 onClick={() => handleChange(words.w2)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w2}
               </div>
@@ -117,7 +117,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/2 pl-2">
               <div
                 onClick={() => handleChange(words.w3)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w3}
               </div>
@@ -127,7 +127,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/4 flex justify-center">
               <div
                 onClick={() => handleChange(words.w4)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w4}
               </div>
@@ -135,7 +135,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/4 flex justify-center">
               <div
                 onClick={() => handleChange(words.mw)}
-                className=" w-24 h-24 rounded-full bg-primary-std flex justify-center items-center font-semibold text-3xl text-white hover:bg-primary-dark hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-roxoLogo-std flex justify-center items-center font-semibold text-3xl text-white hover:bg-roxoLogo-dark hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.mw}
               </div>
@@ -143,7 +143,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/4 flex justify-center">
               <div
                 onClick={() => handleChange(words.w5)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w5}
               </div>
@@ -153,7 +153,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/2 flex justify-end pr-2">
               <div
                 onClick={() => handleChange(words.w6)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w6}
               </div>
@@ -161,7 +161,7 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
             <div className=" w-1/2 pl-2">
               <div
                 onClick={() => handleChange(words.w7)}
-                className=" w-24 h-24 rounded-full bg-secundary flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w7}
               </div>
@@ -171,13 +171,13 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
         <div className="w-full h-12 mx-auto flex justify-between">
           <div
             onClick={() => handleDelete()}
-            className="h-full w-2/5 border  border-secundary rounded-std flex items-center justify-center font-semibold text-tDark text-xl hover:cursor-pointer hover:bg-zinc-200"
+            className="h-full w-2/5 border  border-grayDefault rounded-std flex items-center justify-center font-semibold text-tDark text-xl hover:cursor-pointer hover:bg-zinc-200"
           >
             Apagar
           </div>
           <div
             onClick={() => handleSubmitGuess()}
-            className="h-full w-2/5 bg-primary-std rounded-std flex items-center justify-center text-white font-semibold text-xl hover:cursor-pointer hover:bg-primary-dark"
+            className="h-full w-2/5 bg-roxoLogo-std rounded-std flex items-center justify-center text-white font-semibold text-xl hover:cursor-pointer hover:bg-roxoLogo-dark"
           >
             Confirmar
           </div>

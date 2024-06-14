@@ -45,25 +45,25 @@ const Table: FunctionComponent<TableProps> = ({ tableUpdate }) => {
 
   return (
     <>
-      <div className="w-500 flex flex-col gap-5">
-        <span className="flex justify-between">
+      <div className="w-500 max-[650px]:w-full flex flex-col gap-5">
+        <span className="flex justify-between px-4">
           <h1 className="text-tDark font-bold text-lg">
             Palavras já encontradas
           </h1>
-          <div className="w-16 h-8 rounded-std bg-primary-std flex items-center justify-center">
+          <div className="w-16 h-8 rounded-std bg-roxoLogo-std flex items-center justify-center">
             <p className="text-white font-bold text-lg ">
               {alreadyGuessed?.length}/{results.length}
             </p>
           </div>
         </span>
-        <div className="h-96 w-500 pb-24 overflow-scroll flex flex-col gap-5">
-          <div className="grid grid-cols-2 gap-5">
+        <div className="h-96 w-full pb-24 overflow-scroll flex flex-col gap-5">
+          <div className="w-full grid grid-cols-2 gap-5 max-[650px]:grid-cols-1">
             {alreadyGuessed?.map((answer) => (
               <div
                 key={Object.keys(answer)[0]}
-                className="border-2 border-primary-std flex items-center justify-start pl-3 rounded-std w-full h-12"
+                className="w-full h-12 pl-3 border-2 border-roxoLogo-std flex items-center justify-start rounded-std "
               >
-                <p className="text-primary-std font-bold text-sm">
+                <p className="text-roxoLogo-std font-bold text-sm">
                   {Object.values(answer)}
                 </p>
               </div>
@@ -73,7 +73,7 @@ const Table: FunctionComponent<TableProps> = ({ tableUpdate }) => {
                 !corrects.includes(word[1]) && (
                   <div
                     key={word[1]}
-                    className="border-2 border-secundary flex items-center justify-start pl-3 rounded-std w-full h-12"
+                    className="border-2 border-grayDefault flex items-center justify-start pl-3 rounded-std h-12"
                   >
                     <p className="text-tLight text-sm">{word[0]} letras</p>
                   </div>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, FunctionComponent } from "react";
 import UserContext from "../../Context/UserContext";
 
 import { UserAuth } from "../../Interfaces/User/Auth";
@@ -8,45 +8,71 @@ import { Input } from "../../Components/ui/input";
 
 import Avatar from "../../Components/UserDefaultAvatar/Avatar";
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import Navbar from "@/Components/Navbar/Navbar";
 
-const Profile = () => {
+interface ProfileProps {
+  screenSize: number;
+}
+
+const Profile: FunctionComponent<ProfileProps> = ({ screenSize }) => {
   const { info } = useContext<UserAuth>(UserContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+
+    if (!token) {
+      window.location.replace("/login");
+    } else {
+    }
+  }, []);
+
   return (
     <>
-      <div className="flex">
-        <div className="h-screen w-32 shadow-md mr-20 fixed left-0">
-          <Sidebar />
-        </div>
-        <div className="w-1000 h-650 ml-56 m-auto">
+      <div className="min-[591px]:flex min-[591px]:ml-40 ">
+        {screenSize <= 590 ? (
+          <nav>
+            <Navbar />
+          </nav>
+        ) : (
+          <aside className="h-screen w-32 shadow-md fixed left-0">
+            <Sidebar />
+          </aside>
+        )}
+        <div className="w-full px-2 mx-auto ">
           <div className="w-full h-full mx-auto ">
-            <div className="w-full mt-32 bg-primary-std rounded-l-full flex items-center">
-              <div className="w-full h-full flex items-center justify-between pl-4 pr-4 rounded-l-full">
-                <div className="p-4">
+            <div className="w-full mt-4 bg-roxoLogo-std  rounded-std rounded-l-full flex items-center">
+              <div className="w-full pr-8 h-full mx-start flex items-center gap-4">
+                <div className="p-4 ">
                   <Avatar name={info.name} />
                 </div>
-                <div className="">
-                  <h1 className="font-bold text-4xl text-white">
-                    {info.nickname}
-                  </h1>
-                  <p className="font-bold text-2xl text-white">{info.name}</p>
-                </div>
-                <div className="">
-                  <span className="flex justify-between items-center gap-4">
-                    <h1 className="font-bold text-lg text-white">
-                      Pontos: 1850
+                <div className="w-full min-[900px]:flex justify-between  ">
+                  <div className="">
+                    <h1 className="font-bold text-4xl text-white">
+                      {info.nickname}
                     </h1>
-                    <Star size={35} color="white" />
-                  </span>
-                  <span className="flex justify-between items-center gap-4">
-                    <h1 className="font-bold text-lg text-white">Jogos: 64</h1>
-                    <Gamepad2 size={35} color="white" />
-                  </span>
+                    <p className="font-bold text-2xl text-white">{info.name}</p>
+                  </div>
+                  <div className=" justify-between gap-10 ">
+                    <span className="flex justify-between items-center gap-4 z">
+                      <h1 className="font-bold text-lg text-white">
+                        Pontos:{" "}
+                        <span className=" font-normal text-sm">1850</span>
+                      </h1>
+                      <Star size={35} color="white" />
+                    </span>
+                    <span className="flex justify-between items-center gap-4">
+                      <h1 className="font-bold text-lg text-white">
+                        Jogos: <span className=" font-normal text-sm">64</span>
+                      </h1>
+                      <Gamepad2 size={35} color="white" />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="w-full h-2/3 mt-20 flex justify-between gap-24 ">
-              <div className="w-1/2 h-full ">
+            <div className="mt-20 min-[900px]:flex items-center justify-between gap-24 ">
+              <div className="w-full px-4 pb-10 h-full mx-auto ">
                 <h1 className="text-tDark text-2xl font-bold">Editar perfil</h1>
                 <div className="mt-8 flex flex-col gap-5">
                   <span>
@@ -61,7 +87,7 @@ const Profile = () => {
                       value={info.nickname}
                       name="nickname"
                       id="username"
-                      className="rounded-std border-2 pl-3 text-base text-tDark border-secundary"
+                      className="rounded-std-2 pl-3 text-base text-tDark border-secundary"
                     />
                   </span>
                   <span>
@@ -93,12 +119,12 @@ const Profile = () => {
                       className="rounded-std border-2 pl-3 text-base text-tDark border-secundary"
                     />
                   </span>
-                  <div className="w-36 h-10 bg-primary-std rounded-std flex items-center justify-center hover:cursor-pointer hover:bg-primary-dark">
+                  <div className="w-36 h-10 bg-roxoLogo-std rounded-std flex items-center justify-center hover:cursor-pointer hover:bg-roxoLogo-dark">
                     <h1 className="text-white font-bold text-lg">Salvar</h1>
                   </div>
                 </div>
               </div>
-              <div className="w-1/2 h-full ">
+              <div className="w-full px-4 pb-10 h-full mx-auto">
                 <h1 className="text-tDark text-2xl font-bold">Editar perfil</h1>
                 <div className="mt-8 flex flex-col gap-5">
                   <span>
@@ -140,7 +166,7 @@ const Profile = () => {
                       className="rounded-std border-2 pl-3 text-base text-tDark border-secundary"
                     />
                   </span>
-                  <div className="w-36 h-10 bg-primary-std rounded-std flex items-center justify-center hover:cursor-pointer hover:bg-primary-dark">
+                  <div className="w-36 h-10 bg-roxoLogo-std rounded-std flex items-center justify-center hover:cursor-pointer hover:bg-roxoLogo-dark">
                     <h1 className="text-white font-bold text-lg">Salvar</h1>
                   </div>
                 </div>

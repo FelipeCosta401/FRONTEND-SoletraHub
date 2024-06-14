@@ -17,6 +17,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
     name: "",
     email: "",
     password: "",
+    nickname: "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -136,23 +137,23 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
             type="submit"
             onClick={() => handleLogin()}
             value="Entrar"
-            className="border h-10 rounded-std bg-primary-std text-white font-bold text-base hover:cursor-pointer hover:bg-roxoLogo-dark"
+            className="border h-10 rounded-std bg-roxoLogo-std text-white font-bold text-base hover:cursor-pointer hover:bg-roxoLogo-dark"
           />
         ) : (
           <input
             type="submit"
             onClick={() => handleRegister()}
             value="Registrar"
-            className="border h-10 rounded-std bg-primary-std text-white font-bold text-base hover:cursor-pointer hover:bg-roxoLogo-dark"
+            className="border h-10 rounded-std bg-roxoLogo-std text-white font-bold text-base hover:cursor-pointer hover:bg-roxoLogo-dark"
           />
         )}
         {isLogin ? (
           <a href="/register">
-            <p className="font-bold text-primary-std">Não possui uma conta?</p>
+            <p className="font-bold text-roxoLogo-std">Não possui uma conta?</p>
           </a>
         ) : (
           <a href="/login">
-            <p className="font-bold text-primary-std">Já possui uma conta?</p>
+            <p className="font-bold text-roxoLogo-std">Já possui uma conta?</p>
           </a>
         )}
 

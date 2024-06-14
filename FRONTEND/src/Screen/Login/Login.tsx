@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 
 import Form from "../../Components/FormLogin/Form";
 import Logo from "../../assets/Logosimples.png";
@@ -9,17 +9,20 @@ interface LoginProps {
 }
 
 const Login: FunctionComponent<LoginProps> = ({ login }) => {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <div
-        className="bg-primary-dark flex"
+        className="bg-roxoLogo-dark flex"
         style={{ height: "100vh", width: "100vw" }}
       >
         <div className="bg-white w-500 h-full rounded-r-std  pb-12">
           <div className="w-3/4 h-full m-auto">
             <div className="h-1/4 w-48 mx-auto mb-4 flex flex-col items-center justify-center">
-              <img src={Logo} className="w-16" />
-              <h1 className="font-bold text-2xl text-tDark">SoletraHub</h1>
+              <img src={Logo} className="w-32" />
             </div>
             <div className="h-2/3">
               {login ? (

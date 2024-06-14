@@ -13,10 +13,17 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
+        500: "500px",
         "2xl": "1400px",
       },
     },
     extend: {
+      transform: {
+        "rotate-x-90": "rotateX(90deg)",
+      },
+      perspective: {
+        1000: "1000px",
+      },
       height: {
         600: "600px",
         650: "650px",
@@ -27,11 +34,11 @@ module.exports = {
         1000: "1000px",
       },
       colors: {
-        primary: {
+        roxoLogo: {
           std: "#46019F",
           dark: "#320f5e",
         },
-        secundary: "#E3E3E3",
+        grayDefault: "#E3E3E3",
         azulLogo: "#37DBFD",
         tDark: "#3A3A3A",
         tLight: "#9E9E9E",
@@ -40,6 +47,14 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -65,7 +80,7 @@ module.exports = {
         std: "10px",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
-        sm: "5px",
+        sm: "8px  ",
       },
       keyframes: {
         "accordion-down": {
@@ -80,6 +95,9 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontSize: {
+        "10xl": "150px",
       },
     },
   },

@@ -1,14 +1,14 @@
 import { FunctionComponent } from "react";
 
-interface AvatarProps {
+interface UserDefaultAvatarProps {
   name: string;
+  mini?: boolean;
 }
 
-const Avatar: FunctionComponent<AvatarProps> = ({ name }) => {
-  const teste = () => {
-    console.log(name);
-  };
-
+const UserDefaultAvatar: FunctionComponent<UserDefaultAvatarProps> = ({
+  name,
+  mini,
+}) => {
   const formatInitials = () => {
     const initials = name
       .split(" ")
@@ -21,14 +21,15 @@ const Avatar: FunctionComponent<AvatarProps> = ({ name }) => {
 
   return (
     <>
-      <div
-        onClick={() => teste()}
-        className="w-32 h-32 rounded-full bg-secundary flex flex-col justify-center items-center font-bold text-5xl"
-      >
-        {formatInitials()}
+      <div className="w-32 h-32 rounded-full bg-grayDefault flex flex-col justify-center items-center ">
+        {mini ? (
+          <p className="font-bold text-lg">{formatInitials()}</p>
+        ) : (
+          <p className="font-bold text-5xl">{formatInitials()}</p>
+        )}
       </div>
     </>
   );
 };
 
-export default Avatar;
+export default UserDefaultAvatar;
