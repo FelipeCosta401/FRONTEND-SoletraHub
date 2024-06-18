@@ -6,17 +6,35 @@ import { Toaster } from "../../Components/ui/sonner";
 import { toast } from "sonner";
 
 interface KeysProps {
-  onUpdate: any;
+  onUpdate: (key: string, value: string | number) => void;
+  onWrongsUpdate: (wrong: number) => void;
 }
 
-const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
+const Keys: FunctionComponent<KeysProps> = ({ onUpdate, onWrongsUpdate }) => {
+  const correctGuesses = localStorage.getItem("UserCorrectGuesses");
+  const wrongGuesses = localStorage.getItem("UserWrongGuesses");
+  const dailyPoints = localStorage.getItem("UserDailyPoints");
   const [finalGuess, setFinalGuess] = useState<string>("");
   const [words, setWords] = useState<LettersInterface>();
-  const storedUserGuesses = localStorage.getItem("UserCorrectGuesses");
-  const [corrects, setCorrects] = useState<any[]>(
-    storedUserGuesses ? JSON.parse(storedUserGuesses) : []
+  const [points, setPoints] = useState<number>(
+    dailyPoints ? JSON.parse(dailyPoints) : 0
   );
-  const { words: dailyWords } = useFetch();
+  const [wrongs, setWrongs] = useState<number>(
+    wrongGuesses ? JSON.parse(wrongGuesses) : 0
+  );
+  const [corrects, setCorrects] = useState<any[]>(
+    correctGuesses ? JSON.parse(correctGuesses) : []
+  );
+  const { words: dailyWords, results } = useFetch();
+
+  useEffect(() => {
+    localStorage.setItem("UserDailyPoints", JSON.stringify(points));
+  }, [points]);
+
+  useEffect(() => {
+    localStorage.setItem("UserWrongGuesses", JSON.stringify(wrongs));
+    onWrongsUpdate(wrongs);
+  }, [wrongs]);
 
   useEffect(() => {
     const formatWord = (letter: string) => {
@@ -54,39 +72,55 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate }) => {
   }, [corrects]);
 
   const handleSubmitGuess = () => {
-    axiosInstance
-      .post("/home/answer", {
-        answer: finalGuess,
-      })
-      .then((res) => {
-        if (res.data[0]) {
-          if (corrects.length > 0) {
-            let allAnswers: number[] = [];
+    if (finalGuess.length < 4) {
+      toast.error("A palavra tem que conter ao menos 4 letras!");
+    } else {
+      axiosInstance
+        .post("/home/answer", {
+          answer: finalGuess,
+        })
+        .then((res) => {
+          if (res.data[0]) {
+            if (corrects.length > 0) {
+              let allAnswers: number[] = [];
 
-            corrects.map((answer) => {
-              allAnswers = [
-                ...allAnswers,
-                ...Object.keys(answer).map((key) => Number(key)),
-              ];
-            });
-            if (allAnswers.includes(res.data[1])) {
-              toast.error("Essa palavra ja foi adivinhada!");
+              corrects.map((answer) => {
+                allAnswers = [
+                  ...allAnswers,
+                  ...Object.keys(answer).map((key) => Number(key)),
+                ];
+              });
+              if (allAnswers.includes(res.data[1])) {
+                toast.error("Essa palavra ja foi adivinhada!");
+              } else {
+                setCorrects([...corrects, { [res.data[1]]: res.data[2] }]);
+                results.map((result) => {
+                  if (res.data[1] === result[1]) {
+                    setPoints((prevPoints) => prevPoints + result[0] * 2);
+                  }
+                });
+                toast.success("Palavra correta!");
+              }
             } else {
               setCorrects([...corrects, { [res.data[1]]: res.data[2] }]);
+              results.map((result) => {
+                if (res.data[1] === result[1]) {
+                  setPoints((prevPoints) => prevPoints + result[0] * 2);
+                }
+              });
               toast.success("Palavra correta!");
             }
           } else {
-            setCorrects([...corrects, { [res.data[1]]: res.data[2] }]);
-            toast.success("Palavra correta!");
+            toast.error("Essa palavra nao esta na lista!");
+            setPoints((prevPoints) => prevPoints - 1);
+            setWrongs((prevWrongs) => prevWrongs + 1);
           }
-        } else {
-          toast.error("Essa palavra nao esta na lista!");
-        }
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        setFinalGuess("");
-      });
+        })
+        .catch((error) => console.log(error))
+        .finally(() => {
+          setFinalGuess("");
+        });
+    }
   };
 
   return (

@@ -37,7 +37,7 @@ const Ranking: FunctionComponent<RankingProps> = ({ screenSize }) => {
 
   return (
     <>
-      <div className="w-screen h-full min-[591px]:flex justify-between gap-4">
+      <div className="w-full h-full min-[591px]:flex justify-between gap-4">
         {screenSize <= 590 ? (
           <nav>
             <Navbar ranking />
@@ -47,7 +47,7 @@ const Ranking: FunctionComponent<RankingProps> = ({ screenSize }) => {
             <Sidebar ranking />
           </aside>
         )}
-        <div className="w-full flex flex-col gap-10 pb-10 min-[591px]:ml-36 border">
+        <div className="w-full flex flex-col gap-10 pb-10 min-[591px]:ml-36 px-2 ">
           <Podium props={users} />
           <RankingTable props={users} />
         </div>

@@ -11,17 +11,26 @@ interface HomeProps {
 
 const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
   const [token, setToken] = useState<string | null>("");
+  const [wrongs, setWrongs] = useState<number>(0);
   const [key, setKey] = useState<string>("");
-  const [value, setValue] = useState<String>("");
+  const [value, setValue] = useState<String | number>("");
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");
     setToken(token);
   }, [localStorage.getItem("userToken")]);
 
-  const updateLocalStorage = (key: string, value: string) => {
+  const updateLocalStorage = (key: string, value: string | number) => {
     setKey(key);
     setValue(value);
+  };
+
+  const updateWrongs = (wrong: number) => {
+    setWrongs(wrong);
+  };
+
+  const handleComplete = () => {
+    console.log("Usuario finalizou o jogo com ", wrongs, " erros!");
   };
 
   return (
@@ -30,11 +39,11 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
         <div className="max-w-screen flex max-[590px]:flex-col justify-between gap-4">
           {screenSize <= 590 ? (
             <nav>
-              <Navbar home/>
+              <Navbar home onComplete={() => handleComplete()} />
             </nav>
           ) : (
             <aside className="h-screen w-32 shadow-md fixed left-0">
-              <Sidebar home />
+              <Sidebar home onComplete={() => handleComplete()} />
             </aside>
           )}
 
@@ -42,13 +51,17 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
             <div className="w-[95%] flex justify-center items-center gap-4 max-[1200px]:flex-col max-[1200px]:mt-28">
               <div className="w-1/2 flex justify-center items-center">
                 <Keys
-                  onUpdate={(key: any, value: any) =>
+                  onUpdate={(key: string, value: string | number) =>
                     updateLocalStorage(key, value)
                   }
+                  onWrongsUpdate={(wrong: number) => updateWrongs(wrong)}
                 />
               </div>
               <div className="w-500 max-[650px]:w-full flex justify-center items-center">
-                <Table tableUpdate={{ [key]: value }} />
+                <Table
+                  tableUpdate={{ [key]: value }}
+                  onComplete={() => handleComplete()}
+                />
               </div>
             </div>
           </main>

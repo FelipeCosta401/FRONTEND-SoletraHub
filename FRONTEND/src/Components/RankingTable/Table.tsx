@@ -22,8 +22,7 @@ const RankingTable: FunctionComponent<RankingTableProps> = ({
 }) => {
   return (
     <>
-      <h4>Top 100</h4>
-      <div className="w-[600px] mx-auto border ">
+      <div className="w-[600px] max-[770px]:w-full mx-auto border ">
         <Table>
           <TableHeader className="bg-roxoLogo-std">
             <TableHead>

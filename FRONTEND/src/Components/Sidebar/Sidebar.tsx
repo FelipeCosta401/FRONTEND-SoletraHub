@@ -22,11 +22,17 @@ interface SideBarprops {
   home?: boolean;
   ranking?: boolean;
   profile?: boolean;
+  onComplete?: () => void;
 }
 
-const Sidebar: FunctionComponent<SideBarprops> = ({ home, ranking }) => {
+const Sidebar: FunctionComponent<SideBarprops> = ({
+  home,
+  ranking,
+  onComplete,
+}) => {
   const { info } = useContext(UserContext);
   const handleLogout = () => {
+    onComplete && onComplete();
     localStorage.clear();
     window.location.reload();
   };

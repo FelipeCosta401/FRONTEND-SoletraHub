@@ -1,17 +1,33 @@
 import { useEffect, useState, FunctionComponent } from "react";
 import useFetch from "@/Hooks/useFetch";
+import { Progress } from "../ui/progress";
 
 interface TableProps {
   tableUpdate: {
     key: string;
     value: string;
   };
+  onComplete: () => void;
 }
 
-const Table: FunctionComponent<TableProps> = ({ tableUpdate }) => {
+const Table: FunctionComponent<TableProps> = ({
+  tableUpdate,
+  onComplete,
+}) => {
   const { results } = useFetch();
-  const [alreadyGuessed, setAlreadyGuessed] = useState<number[] | undefined>();
+  const [alreadyGuessed, setAlreadyGuessed] = useState<number[]>([]);
   const [corrects, setCorrects] = useState<number[]>([]);
+  const [progress, setProgress] = useState<number>(0);
+  const [points, setPoints] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
+
+  useEffect(() => {
+    if (results) {
+      results.map((result) => {
+        setTotal((prevTotal) => prevTotal + result[0] * 2);
+      });
+    }
+  }, [results]);
 
   useEffect(() => {
     const storedUserCorrectGuesses = localStorage.getItem("UserCorrectGuesses");
@@ -27,30 +43,40 @@ const Table: FunctionComponent<TableProps> = ({ tableUpdate }) => {
         ...alreadyGuessed.map((answer) => Number(Object.keys(answer)[0])),
       ]);
     }
-  }, [alreadyGuessed]);
 
-  useEffect(() => {
-    const handleStorageChange = (event: { key: string }) => {
-      if (event.key === "UserCorrectGuesses") {
-        console.log("teste");
+    //Verifica se o usuario finalizou o jogo
+    if (alreadyGuessed.length > 0 && results.length > 0) {
+      if (alreadyGuessed.length === results.length) {
+        onComplete();
       }
-    };
+    }
 
-    window.addEventListener("storage", handleStorageChange);
+    //Calcula os pontos do usuario
+    if (results) {
+      const pointsString: any = localStorage.getItem("UserDailyPoints");
+      setPoints(JSON.parse(pointsString));
 
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+      if (total > 0) {
+        setProgress((points / total) * 100);
+      }
+    }
+  }, [alreadyGuessed, results, total, points]);
 
   return (
     <>
       <div className="w-500 max-[650px]:w-full flex flex-col gap-5">
-        <span className="flex justify-between px-4">
+        <span className="w-full">
+          <h4 className="font-bold text-lg ml-4">Pontuação:</h4>
+          <span className="w-[90%] ml-auto flex gap-4 items-center">
+            <h4>{points}</h4>
+            <Progress value={progress} className="w-full" />
+          </span>
+        </span>
+        <span className="flex justify-between px-4 ">
           <h1 className="text-tDark font-bold text-lg">
             Palavras já encontradas
           </h1>
-          <div className="w-16 h-8 rounded-std bg-roxoLogo-std flex items-center justify-center">
+          <div className="w-16 h-8 rounded-std bg-roxoLogo-std flex items-center justify-center ">
             <p className="text-white font-bold text-lg ">
               {alreadyGuessed?.length}/{results.length}
             </p>

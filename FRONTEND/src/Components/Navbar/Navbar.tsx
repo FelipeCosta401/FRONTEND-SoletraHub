@@ -33,11 +33,17 @@ import UserDefaultAvatar from "@/Components/UserDefaultAvatar/Avatar";
 interface NavbarProps {
   home?: boolean;
   ranking?: boolean;
+  onComplete?: () => void;
 }
 
-const Navbar: FunctionComponent<NavbarProps> = ({ home, ranking }) => {
+const Navbar: FunctionComponent<NavbarProps> = ({
+  home,
+  ranking,
+  onComplete,
+}) => {
   const { info } = useContext(UserContext);
   const handleLogout = () => {
+    onComplete();
     localStorage.clear();
     window.location.replace("/login");
   };
