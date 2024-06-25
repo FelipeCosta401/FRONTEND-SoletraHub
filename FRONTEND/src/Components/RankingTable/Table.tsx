@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 import {
   Table,
@@ -17,9 +17,16 @@ interface RankingTableProps {
   props: any[];
 }
 
-const RankingTable: FunctionComponent<RankingTableProps> = ({
-  props: users,
-}) => {
+const RankingTable: FunctionComponent<RankingTableProps> = ({ props }) => {
+  const [users, setUsers] = useState<any[]>([]);
+  useEffect(() => {
+    const updatedUsers = props.map((user, index) => ({
+      ...user,
+      rank: index + 1,
+    }));
+    setUsers(updatedUsers);
+  }, [props]);
+
   return (
     <>
       <div className="w-[600px] max-[770px]:w-full mx-auto border ">
@@ -43,8 +50,10 @@ const RankingTable: FunctionComponent<RankingTableProps> = ({
           </TableHeader>
           <TableBody>
             {users.map((user) => (
-              <TableRow>
-                <TableCell align="center">{}</TableCell>
+              <TableRow key={user.rank}>
+                <TableCell align="center" onClick={() => console.log(users)}>
+                  <p className="font-bold text-lg text-tDark">{user.rank}</p>
+                </TableCell>
                 <TableCell align="center">
                   <span className="flex items-center gap-2">
                     {user.avatar ? (

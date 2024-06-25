@@ -1,6 +1,7 @@
 import { useEffect, useState, FunctionComponent } from "react";
 import useFetch from "@/Hooks/useFetch";
 import { Progress } from "../ui/progress";
+import { ScrollArea } from "@/Components/ui/scroll-area";
 
 interface TableProps {
   tableUpdate: {
@@ -10,10 +11,7 @@ interface TableProps {
   onComplete: () => void;
 }
 
-const Table: FunctionComponent<TableProps> = ({
-  tableUpdate,
-  onComplete,
-}) => {
+const Table: FunctionComponent<TableProps> = ({ tableUpdate, onComplete }) => {
   const { results } = useFetch();
   const [alreadyGuessed, setAlreadyGuessed] = useState<number[]>([]);
   const [corrects, setCorrects] = useState<number[]>([]);
@@ -45,10 +43,8 @@ const Table: FunctionComponent<TableProps> = ({
     }
 
     //Verifica se o usuario finalizou o jogo
-    if (alreadyGuessed.length > 0 && results.length > 0) {
-      if (alreadyGuessed.length === results.length) {
-        onComplete();
-      }
+    if (alreadyGuessed.length > 0 && alreadyGuessed.length === results.length) {
+      onComplete();
     }
 
     //Calcula os pontos do usuario
@@ -60,7 +56,7 @@ const Table: FunctionComponent<TableProps> = ({
         setProgress((points / total) * 100);
       }
     }
-  }, [alreadyGuessed, results, total, points]);
+  }, [alreadyGuessed, points, total]);
 
   return (
     <>
@@ -82,31 +78,33 @@ const Table: FunctionComponent<TableProps> = ({
             </p>
           </div>
         </span>
-        <div className="h-96 w-full pb-24 overflow-scroll flex flex-col gap-5">
-          <div className="w-full grid grid-cols-2 gap-5 max-[650px]:grid-cols-1">
-            {alreadyGuessed?.map((answer) => (
-              <div
-                key={Object.keys(answer)[0]}
-                className="w-full h-12 pl-3 border-2 border-roxoLogo-std flex items-center justify-start rounded-std "
-              >
-                <p className="text-roxoLogo-std font-bold text-sm">
-                  {Object.values(answer)}
-                </p>
-              </div>
-            ))}
-            {results.map(
-              (word) =>
-                !corrects.includes(word[1]) && (
-                  <div
-                    key={word[1]}
-                    className="border-2 border-grayDefault flex items-center justify-start pl-3 rounded-std h-12"
-                  >
-                    <p className="text-tLight text-sm">{word[0]} letras</p>
-                  </div>
-                )
-            )}
+        <ScrollArea className="pr-4">
+          <div className="h-96 w-full pb-24 flex flex-col gap-5">
+            <div className="w-full grid grid-cols-2 gap-5 max-[400px]:grid-cols-1">
+              {alreadyGuessed?.map((answer) => (
+                <div
+                  key={Object.keys(answer)[0]}
+                  className="w-full h-12 pl-3 border-2 border-roxoLogo-std flex items-center justify-start rounded-std "
+                >
+                  <p className="text-roxoLogo-std font-bold text-sm">
+                    {Object.values(answer)}
+                  </p>
+                </div>
+              ))}
+              {results.map(
+                (word) =>
+                  !corrects.includes(word[1]) && (
+                    <div
+                      key={word[1]}
+                      className="border-2 border-grayDefault flex items-center justify-start pl-3 rounded-std h-12"
+                    >
+                      <p className="text-tLight text-sm">{word[0]} letras</p>
+                    </div>
+                  )
+              )}
+            </div>
           </div>
-        </div>
+        </ScrollArea>
       </div>
     </>
   );

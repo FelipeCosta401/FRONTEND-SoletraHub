@@ -12,11 +12,14 @@ import {
   AlertDialogTrigger,
 } from "../ui/dialog";
 
+import { Button } from "../ui/button";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+
 import { Gamepad2, HomeIcon, Star, LogOut } from "lucide-react";
 
 import Logo from "../../assets/Logo.png";
-import Avatar from "../UserDefaultAvatar/Avatar";
-import { Button } from "../ui/button";
+import UserDefaultAvatar from "../UserDefaultAvatar/Avatar";
 
 interface SideBarprops {
   home?: boolean;
@@ -77,20 +80,24 @@ const Sidebar: FunctionComponent<SideBarprops> = ({
             <HomeIcon size={45} className="text-tDark" />
           </div>
         </div>
-        <div className="w-24 h-24 mb-4 flex flex-col gap-2 items-center ">
-          <div
-            onClick={() => {
-              window.location.replace("/profile");
-            }}
-            className="w-2/3 h-2/3 rounded-full flex items-center overflow-hidden hover:cursor-pointer  "
+        <div className="w-24 h-[120px] mb-4 flex flex-col gap-2 items-center ">
+          <Avatar
+            className="w-[70px] h-[70px] hover:cursor-pointer "
+            onClick={() => window.location.replace("/profile")}
           >
-            <Avatar name={info.name} />
-          </div>
-          <div className="w-full h-1/3 bg-roxoLogo-std rounded-std flex items-center justify-center gap-1 hover:cursor-pointer hover:shadow-xl hover:bg-roxoLogo-dark">
+            <AvatarFallback>
+              <UserDefaultAvatar name={info.nickname} />
+            </AvatarFallback>
+          </Avatar>
+          <div className="w-full h-1/3">
             <AlertDialog>
-              <AlertDialogTrigger className="flex items-center justify-center gap-1">
-                <LogOut color="#fff" size={20} />
-                <p className="text-sm font-bold text-white">LOGOUT</p>
+              <AlertDialogTrigger className="w-full">
+                <Button className="w-full h-full bg-roxoLogo-std hover:bg-roxoLogo-dark hover:cursor-pointer rounded-std">
+                  <div className="flex justify-between items-center">
+                    <LogOut />
+                    <p>LOGOUT</p>
+                  </div>
+                </Button>
               </AlertDialogTrigger>
               <AlertDialogContent className="bg-white rounded-std">
                 <AlertDialogHeader>

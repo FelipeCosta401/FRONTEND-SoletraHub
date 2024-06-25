@@ -1,9 +1,11 @@
 import { useState, useEffect, FunctionComponent } from "react";
+import axiosInstance from "@/Services/AxiosConfig";
 
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Keys from "../../Components/KeysArea/Keys";
 import Table from "../../Components/AllWordsTable/Table";
 import Navbar from "@/Components/Navbar/Navbar";
+import FinishDialog from "@/Components/FinishDialog/FinishDialog";
 
 interface HomeProps {
   screenSize: number;
@@ -14,6 +16,7 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
   const [wrongs, setWrongs] = useState<number>(0);
   const [key, setKey] = useState<string>("");
   const [value, setValue] = useState<String | number>("");
+  const [finish, setFinish] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");
@@ -30,7 +33,11 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
   };
 
   const handleComplete = () => {
-    console.log("Usuario finalizou o jogo com ", wrongs, " erros!");
+    setFinish(true);
+    const pointsString = localStorage.getItem("UserDailyPoints");
+    const score = pointsString && JSON.parse(pointsString);
+    console.log(score);
+    axiosInstance.post(`/home/score/${score}`).then((res) => console.log(res));
   };
 
   return (
@@ -57,7 +64,7 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
                   onWrongsUpdate={(wrong: number) => updateWrongs(wrong)}
                 />
               </div>
-              <div className="w-500 max-[650px]:w-full flex justify-center items-center">
+              <div className="w-500 max-[650px]:w-full flex justify-center items-center ">
                 <Table
                   tableUpdate={{ [key]: value }}
                   onComplete={() => handleComplete()}
@@ -65,6 +72,7 @@ const Home: FunctionComponent<HomeProps> = ({ screenSize }) => {
               </div>
             </div>
           </main>
+          <FinishDialog finish={finish} />
         </div>
       ) : (
         window.location.replace("/login")

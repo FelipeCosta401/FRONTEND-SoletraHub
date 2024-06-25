@@ -43,7 +43,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
 }) => {
   const { info } = useContext(UserContext);
   const handleLogout = () => {
-    onComplete();
+    onComplete && onComplete();
     localStorage.clear();
     window.location.replace("/login");
   };
@@ -54,8 +54,13 @@ const Navbar: FunctionComponent<NavbarProps> = ({
         <div className="flex items-center justify-center">
           <img src={Logo} alt="Imagem do logo" />
         </div>
-        <span className="w-full text-center">
-          <h1 className="font-bold text-5xl text-tDark">SOLETRA</h1>
+        <span
+          className="group w-full text-center hover:cursor-pointer"
+          onClick={() => window.location.replace("/")}
+        >
+          <h1 className="font-bold text-5xl text-tDark group-hover:text-tLight">
+            SOLETRA
+          </h1>
         </span>
         <div className="flex justify-center items-center">
           <Sheet>
@@ -68,7 +73,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
                 onClick={() => window.location.replace("/profile")}
               >
                 <SheetTitle className="flex gap-2 items-center">
-                  <Avatar>
+                  <Avatar className="w-[40px] h-[40px]">
                     {info.avatar && (
                       <AvatarImage src={info.avatar} alt="Imagem do usuário" />
                     )}
@@ -79,6 +84,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
                   {info.name}
                 </SheetTitle>
               </SheetHeader>
+
               <div className="w-full h-80 mx-auto flex flex-col gap-10">
                 <div
                   className="group w-full flex items-center gap-6 border border-secondary rounded-std hover:cursor-pointer"

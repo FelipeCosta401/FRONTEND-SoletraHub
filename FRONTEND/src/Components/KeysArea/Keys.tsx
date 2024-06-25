@@ -1,8 +1,9 @@
-import { useState, useEffect, FunctionComponent } from "react";
+import { useState, useEffect, FunctionComponent, FormEvent } from "react";
 import { LettersInterface } from "../../Interfaces/Game/Letters";
 import useFetch from "@/Hooks/useFetch";
 import axiosInstance from "@/Services/AxiosConfig";
-import { Toaster } from "../../Components/ui/sonner";
+import { Button } from "@/Components/ui/button";
+import { Toaster } from "@/Components/ui/sonner";
 import { toast } from "sonner";
 
 interface KeysProps {
@@ -71,7 +72,8 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate, onWrongsUpdate }) => {
     onUpdate("UserCorrectGuesses", JSON.stringify(corrects));
   }, [corrects]);
 
-  const handleSubmitGuess = () => {
+  const handleSubmitGuess = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (finalGuess.length < 4) {
       toast.error("A palavra tem que conter ao menos 4 letras!");
     } else {
@@ -83,7 +85,6 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate, onWrongsUpdate }) => {
           if (res.data[0]) {
             if (corrects.length > 0) {
               let allAnswers: number[] = [];
-
               corrects.map((answer) => {
                 allAnswers = [
                   ...allAnswers,
@@ -125,7 +126,10 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate, onWrongsUpdate }) => {
 
   return (
     <>
-      <div className="w-[440px] flex flex-col gap-4">
+      <form
+        className="w-[440px] flex flex-col gap-4"
+        onSubmit={(e) => handleSubmitGuess(e)}
+      >
         <div className="w-full h-11 flex justify-center ">
           <input
             type="text"
@@ -135,88 +139,96 @@ const Keys: FunctionComponent<KeysProps> = ({ onUpdate, onWrongsUpdate }) => {
             onChange={(e) => setFinalGuess(e.target.value)}
             autoFocus
           />
-
-          <Toaster richColors />
         </div>
         <div className="h-4/5 w-96 mx-auto">
           <div className=" h-1/3 flex justify-between">
             <div className=" w-1/2 flex justify-end pr-2">
-              <div
-                onClick={() => handleChange(words.w2)}
-                className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w2)}
+                className="w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w2}
-              </div>
+              </Button>
             </div>
             <div className=" w-1/2 pl-2">
-              <div
-                onClick={() => handleChange(words.w3)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w3)}
                 className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w3}
-              </div>
+              </Button>
             </div>
           </div>
           <div className=" h-1/3 flex justify-center gap-4">
             <div className=" w-1/4 flex justify-center">
-              <div
-                onClick={() => handleChange(words.w4)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w4)}
                 className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w4}
-              </div>
+              </Button>
             </div>
             <div className=" w-1/4 flex justify-center">
-              <div
-                onClick={() => handleChange(words.mw)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.mw)}
                 className=" w-24 h-24 rounded-full bg-roxoLogo-std flex justify-center items-center font-semibold text-3xl text-white hover:bg-roxoLogo-dark hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.mw}
-              </div>
+              </Button>
             </div>
             <div className=" w-1/4 flex justify-center">
-              <div
-                onClick={() => handleChange(words.w5)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w5)}
                 className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w5}
-              </div>
+              </Button>
             </div>
           </div>
           <div className=" h-1/3 flex justify-between">
             <div className=" w-1/2 flex justify-end pr-2">
-              <div
-                onClick={() => handleChange(words.w6)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w6)}
                 className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w6}
-              </div>
+              </Button>
             </div>
             <div className=" w-1/2 pl-2">
-              <div
-                onClick={() => handleChange(words.w7)}
+              <Button
+                type="button"
+                onClick={() => words && handleChange(words.w7)}
                 className=" w-24 h-24 rounded-full bg-grayDefault flex justify-center items-center font-semibold text-tDark text-3xl hover:bg-zinc-400 hover:cursor-pointer shadow-md hover:shadow-xl"
               >
                 {words?.w7}
-              </div>
+              </Button>
             </div>
           </div>
         </div>
         <div className="w-full h-12 mx-auto flex justify-between">
-          <div
+          <Button
+            type="button"
             onClick={() => handleDelete()}
-            className="h-full w-2/5 border  border-grayDefault rounded-std flex items-center justify-center font-semibold text-tDark text-xl hover:cursor-pointer hover:bg-zinc-200"
+            variant={"outline"}
+            className="w-2/5 h-full text-tDark font-semibold text-xl rounded-std"
           >
             Apagar
-          </div>
-          <div
-            onClick={() => handleSubmitGuess()}
-            className="h-full w-2/5 bg-roxoLogo-std rounded-std flex items-center justify-center text-white font-semibold text-xl hover:cursor-pointer hover:bg-roxoLogo-dark"
+          </Button>
+          <Button
+            type="submit"
+            className="h-full w-2/5 bg-roxoLogo-std flex items-center justify-center text-white font-semibold text-xl rounded-std hover:cursor-pointer hover:bg-roxoLogo-dark"
           >
             Confirmar
-          </div>
+          </Button>
         </div>
-      </div>
+        <Toaster richColors />
+      </form>
     </>
   );
 };

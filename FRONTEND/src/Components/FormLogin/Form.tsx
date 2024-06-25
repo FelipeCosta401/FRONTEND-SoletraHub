@@ -1,7 +1,6 @@
 import { ChangeEvent, FunctionComponent, useState } from "react";
 import axiosInstance from "../../Services/AxiosConfig";
 
-import { Toaster } from "../ui/toaster";
 import { Input } from "../ui/input";
 
 import { UserInterface } from "../../Interfaces/User/User";
@@ -33,6 +32,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
     if (
       !userCredentials.name ||
       !userCredentials.email ||
+      !userCredentials.nickname ||
       !userCredentials.password ||
       !confpass
     ) {
@@ -44,6 +44,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
         .post("/user", {
           name: userCredentials.name,
           email: userCredentials.email,
+          nickname: userCredentials.nickname,
           password: userCredentials.password,
         })
         .then(() => {
@@ -76,8 +77,8 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <span>
+      <div className="w-full flex flex-col gap-4">
+        <span className="px-2 ">
           <label htmlFor="email" className="text-tDark font-medium">
             Email
           </label>
@@ -91,7 +92,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
           />
         </span>
         {!isLogin && (
-          <span>
+          <span className="px-2 ">
             <label htmlFor="nome" className="text-tDark font-medium">
               Nome
             </label>
@@ -105,7 +106,22 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
             />
           </span>
         )}
-        <span>
+        {!isLogin && (
+          <span className="px-2 ">
+            <label htmlFor="password" className="text-tDark font-medium">
+              Nome de usuário
+            </label>
+            <Input
+              id="nickname"
+              name="nickname"
+              value={userCredentials.nickname || ""}
+              onChange={(e) => handleChange(e)}
+              type="text"
+              className="rounded-std border-2 border-secundary"
+            />
+          </span>
+        )}
+        <span className="px-2 ">
           <label htmlFor="password" className="text-tDark font-medium">
             Senha
           </label>
@@ -119,7 +135,7 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
           />
         </span>
         {!isLogin && (
-          <span>
+          <span className="px-2 ">
             <label htmlFor="confpassword" className="text-tDark font-medium">
               Confirmar senha
             </label>
@@ -156,8 +172,6 @@ const Form: FunctionComponent<FormProps> = ({ isLogin }) => {
             <p className="font-bold text-roxoLogo-std">Já possui uma conta?</p>
           </a>
         )}
-
-        <Toaster />
       </div>
     </>
   );

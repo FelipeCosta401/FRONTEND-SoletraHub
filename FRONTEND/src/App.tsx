@@ -21,6 +21,7 @@ function App() {
     },
   });
 
+  //Seta o contexto do usuario
   useEffect(() => {
     const token = localStorage.getItem("userToken");
     const userInfoString = localStorage.getItem("userInfo");
@@ -36,6 +37,7 @@ function App() {
     }
   }, []);
 
+  //Define a largura do dispositivo que esta acessando a pagina
   useEffect(() => {
     function handleScreenSize() {
       const width = window.innerWidth;
@@ -49,13 +51,35 @@ function App() {
     };
   }, []);
 
+  //Zera o storage todo dia
+  useEffect(() => {
+    const storedDay: string = localStorage.getItem("CurrentDay");
+    const data = new Date();
+    const currentDay = data.getDate();
+
+    if (currentDay !== JSON.parse(storedDay)) {
+      localStorage.removeItem("UserCorrectGuesses");
+      localStorage.removeItem("UserDailyPoints");
+      localStorage.removeItem("UserWrongGuesses");
+      localStorage.setItem("CurrentDay", JSON.stringify(currentDay));
+      
+    }
+
+  }, []);
+
   return (
     <>
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/" element={<Home screenSize={screenWidth} />} />
-          <Route path="/login" element={<Login login />} />
-          <Route path="/register" element={<Login login={false} />} />
+          <Route
+            path="/login"
+            element={<Login login screenSize={screenWidth} />}
+          />
+          <Route
+            path="/register"
+            element={<Login login={false} screenSize={screenWidth} />}
+          />
           <Route
             path="/profile"
             element={<Profile screenSize={screenWidth} />}

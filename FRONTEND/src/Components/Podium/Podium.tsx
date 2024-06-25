@@ -7,13 +7,22 @@ import { Trophy } from "lucide-react";
 import Podio from "../../assets/podio.png";
 import Podio2 from "../../assets/Podio2.png";
 import Podio3 from "../../assets/Podio3.png";
+import UserDefaultAvatar from "../UserDefaultAvatar/Avatar";
 
 interface PodiumProps {
   props: any[];
 }
 
-const Podium: FunctionComponent<PodiumProps> = () => {
+const Podium: FunctionComponent<PodiumProps> = ({ props }) => {
   const [width, setWidth] = useState<number>(0);
+  const [users, setUsers] = useState<any[]>([]);
+  useEffect(() => {
+    const updatedUsers = props.map((user, index) => ({
+      ...user,
+      rank: index + 1,
+    }));
+    setUsers(updatedUsers);
+  }, [props]);
 
   useEffect(() => {
     function handleSize() {
@@ -45,7 +54,9 @@ const Podium: FunctionComponent<PodiumProps> = () => {
             <div className="h-[210px] w-full bg-gradient-to-t from-zinc-400 to-zinc-200 flex items-center justify-center">
               <span className="text-center">
                 <h1 className="font-extrabold text-7xl text-roxoLogo-std">2</h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
+                <h3 className=" font-black text-xl">
+                  {users[1] ? users[1].name : <p>???</p>}
+                </h3>
               </span>
             </div>
           </div>
@@ -61,7 +72,9 @@ const Podium: FunctionComponent<PodiumProps> = () => {
             <div className="h-[270px] w-full bg-gradient-to-t from-zinc-400 to-zinc-200 flex items-center justify-center shadow-2xl">
               <span className="text-center">
                 <h1 className="font-extrabold text-9xl text-roxoLogo-std">1</h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
+                <h3 className=" font-black text-xl">
+                  {users[0] ? users[0].name : <p>???</p>}
+                </h3>
               </span>
             </div>
           </div>
@@ -77,7 +90,9 @@ const Podium: FunctionComponent<PodiumProps> = () => {
             <div className="h-[150px] w-full bg-gradient-to-t from-zinc-400 to-zinc-200 flex items-center justify-center">
               <span className="text-center">
                 <h1 className="font-extrabold text-5xl text-roxoLogo-std">3</h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
+                <h3 className=" font-black text-xl">
+                  {users[2] ? users[2].name : <p>???</p>}
+                </h3>
               </span>
             </div>
           </div>
@@ -95,8 +110,10 @@ const Podium: FunctionComponent<PodiumProps> = () => {
                 <h1 className="font-extrabold text-7xl text-roxoLogo-std">
                   1°
                 </h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
-                <span className="w-[40px] h-[40px] rounded-full mb-2 bg-yellow-400 flex items-center justify-center">
+                <h3 className=" font-black text-xl">
+                  {users[1] ? users[1].name : <p>???</p>}
+                </h3>
+                <span className="w-[40px] h-[40px] rounded-full bg-yellow-400 flex items-center justify-center">
                   <Trophy />
                 </span>
               </span>
@@ -113,8 +130,10 @@ const Podium: FunctionComponent<PodiumProps> = () => {
                 <h1 className="font-extrabold text-5xl text-roxoLogo-std">
                   2°
                 </h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
-                <span className="w-[40px] h-[40px] rounded-full mb-2 bg-grayDefault flex items-center justify-center">
+                <h3 className=" font-black text-xl">
+                  {users[0] ? users[0].name : <p>???</p>}
+                </h3>
+                <span className="w-[40px] h-[40px] rounded-full bg-grayDefault flex items-center justify-center">
                   <Trophy />
                 </span>
               </span>
@@ -131,8 +150,10 @@ const Podium: FunctionComponent<PodiumProps> = () => {
                 <h1 className="font-extrabold text-5xl text-roxoLogo-std">
                   3°
                 </h1>
-                <h3 className=" font-black text-xl">Fezin</h3>
-                <span className="w-[40px] h-[40px] rounded-full mb-2 bg-yellow-700 flex items-center justify-center">
+                <h3 className=" font-black text-xl">
+                  {users[2] ? users[2].name : <p>???</p>}
+                </h3>
+                <span className="w-[40px] h-[40px] rounded-full bg-yellow-700 flex items-center justify-center">
                   <Trophy />
                 </span>
               </span>

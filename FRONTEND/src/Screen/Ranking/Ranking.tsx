@@ -31,6 +31,7 @@ const Ranking: FunctionComponent<RankingProps> = ({ screenSize }) => {
 
   useEffect(() => {
     axiosInstance.get("ranking").then((res) => {
+      console.log(res);
       setUsers(res.data);
     });
   }, []);
